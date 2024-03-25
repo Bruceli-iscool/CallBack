@@ -7,3 +7,7 @@ render body(
     // render the body
     p("Some Text");
 )
+// script
+callback(
+    var int x = 5;
+)
