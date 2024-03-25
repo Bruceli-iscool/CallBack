@@ -10,7 +10,7 @@ def compile(file):
             z = construct.construct(line)
             print(z)
             final = final + z
-        return final
+        return final + "\n</html>"
 
 def start():
     return "<!DOCTOTYPE html>\n\t<html>\n"

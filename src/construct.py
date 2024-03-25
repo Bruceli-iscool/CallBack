@@ -33,7 +33,7 @@ def parse(line, mode):
         if line.startswith("p{") and render == "body":
             line = line.replace("p{", "")
             line = line.replace("}", "")
-            return "<p>" + line + "</p>"
+            return "\t\t<p>" + line.rstrip('\n') + "</p>\n"
         else:
             return ""
     else:
