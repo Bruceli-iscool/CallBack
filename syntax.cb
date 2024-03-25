@@ -1,0 +1,9 @@
+// comment
+render head(
+    // html rendering
+    p("Some text");
+);
+render body(
+    // render the body
+    p("Some Text");
+)
