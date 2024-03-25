@@ -30,6 +30,10 @@ def construct(line):
 def parse(line, mode):
     if mode == 2:
         if line.startswith("p(") and render == "body":
-            line = line.replace("p(", "")
-            line = line.replace(")", "")
+            line = line.replace("p{", "")
+            line = line.replace("}", "")
             return "<p>" + line + "</p>"
+        else:
+            return ""
+    else:
+        return ""

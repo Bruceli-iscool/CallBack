@@ -8,6 +8,7 @@ def compile(file):
                 # ignore comments
                 pass
             z = construct.construct(line)
+            print(z)
             final = final + z
         return final
 
