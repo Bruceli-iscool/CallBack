@@ -117,6 +117,19 @@ def parse(line):
                     return line.replace(" bool", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with bool!")
+        elif " float " in line:
+            modified_line = line.replace("var float ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = float(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, float):
+                    return line.replace(" float", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with float!")
     if line.lstrip().startswith("const"):
         if " int " in line:
             modified_line = line.replace("const int ", "")
@@ -152,6 +165,19 @@ def parse(line):
                     return line.replace(" bool", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with bool!")
+        elif " float " in line:
+            modified_line = line.replace("const float ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = float(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, float):
+                    return line.replace(" float", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with float!")
 # Check type
 def checkType(value, type):
         x = isinstance(value, type)
