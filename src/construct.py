@@ -1,4 +1,3 @@
-import sys
 # Construct compilable source code
 # Basically create an AST
 parens = 0
@@ -65,7 +64,8 @@ def parse(line):
             finally:
                 if checkType(modified_line, int):
                     var[name] = int
-                    return line.replace(" int", "")
+                    line = line.replace(" int", "")
+                    return line
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with int!")
                     return ""
@@ -75,7 +75,8 @@ def parse(line):
             name = name.replace(" ", "")
             if checkType(modified_line, str):
                 var[name] = str
-                return line.replace(" String", "")
+                line = line.replace(" String", "")
+                return line
             else:
                 print(f"ValueError!: {modified_line} is not compatiable with String!")
                 return ""
@@ -90,7 +91,8 @@ def parse(line):
             finally:
                 if checkType(modified_line, bool):
                     var[name] = bool
-                    return line.replace(" bool", "")
+                    line = line.replace(" bool", "")
+                    return line
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with bool!")
                     return ""
@@ -240,15 +242,17 @@ def parse(line):
                     return ""
 
     else:
-        return line
+        return line + '\n'
 # Check type
 def checkType(value, type):
         x = isinstance(value, type)
         return x
 
 def compile(file):
-    final = "// JavaScript compiled from CallBack"
+    final = "// JavaScript compiled from CallBack\n"
+    line_num = 0
     with open(file) as files:
         for line in files:
             final = final + parse(line)
+            line_num = line_num + 1
         return final
