@@ -1,2 +1,2 @@
-let bool hi = false
-hi = 5
+let int hi = 5
+console.log()

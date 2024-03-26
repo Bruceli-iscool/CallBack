@@ -1,3 +1,3 @@
 // JavaScript compiled from CallBack
-let hi = false
-hi = 5
+let hi = 5
+console.log()
