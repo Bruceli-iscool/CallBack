@@ -1,8 +1,10 @@
+import sys
 # Construct compilable source code
 # Basically create an AST
 parens = 0
 render = ""
 stateparens = 0
+c = ""
 # save type
 var = {}
 
@@ -43,7 +45,14 @@ def parse_html(line, mode):
 def parse(line):
     # CallBack parsing
     # syntax: let int x = 5;
+    global var, c
     line = line.replace(";", "")
+    try:
+        c , hi = line.split("=")
+        hi = hi
+        c = c.replace(" ", "")
+    except ValueError:
+        pass
     if line.lstrip().startswith("let"):
         if " int " in line:
             modified_line = line.replace("let int ", "")
@@ -59,6 +68,7 @@ def parse(line):
                     return line.replace(" int", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with int!")
+                    return ""
         elif " String " in line:
             modified_line = line.replace("let String ", "")
             name, modified_line = modified_line.split("=")
@@ -68,6 +78,7 @@ def parse(line):
                 return line.replace(" String", "")
             else:
                 print(f"ValueError!: {modified_line} is not compatiable with String!")
+                return ""
         elif " bool " in line:
             modified_line = line.replace("let bool ", "")
             name, modified_line = modified_line.split("=")
@@ -82,6 +93,22 @@ def parse(line):
                     return line.replace(" bool", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with bool!")
+                    return ""
+        elif " float " in line:
+            modified_line = line.replace("let float ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = float(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, float):
+                    var[name] = float
+                    return line.replace(" float", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with float!")
+                    return ""
     if line.lstrip().startswith("var"):
         if " int " in line:
             modified_line = line.replace("var int ", "")
@@ -96,6 +123,7 @@ def parse(line):
                     return line.replace(" int", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with int!")
+                    return ""
         elif " String " in line:
             modified_line = line.replace("var String ", "")
             name, modified_line = modified_line.split("=")
@@ -104,6 +132,7 @@ def parse(line):
                 return line.replace(" String", "")
             else:
                 print(f"ValueError!: {modified_line} is not compatiable with String!")
+                return ""
         elif " bool " in line:
             modified_line = line.replace("var bool ", "")
             name, modified_line = modified_line.split("=")
@@ -117,6 +146,7 @@ def parse(line):
                     return line.replace(" bool", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with bool!")
+                    return ""
         elif " float " in line:
             modified_line = line.replace("var float ", "")
             name, modified_line = modified_line.split("=")
@@ -130,6 +160,7 @@ def parse(line):
                     return line.replace(" float", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with float!")
+                    return ""
     if line.lstrip().startswith("const"):
         if " int " in line:
             modified_line = line.replace("const int ", "")
@@ -144,6 +175,7 @@ def parse(line):
                     return line.replace(" int", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with int!")
+                    return ""
         elif " String " in line:
             modified_line = line.replace("const String ", "")
             name, modified_line = modified_line.split("=")
@@ -152,6 +184,7 @@ def parse(line):
                 return line.replace(" String", "")
             else:
                 print(f"ValueError!: {modified_line} is not compatiable with String!")
+                return ""
         elif " bool " in line:
             modified_line = line.replace("const bool ", "")
             name, modified_line = modified_line.split("=")
@@ -165,6 +198,7 @@ def parse(line):
                     return line.replace(" bool", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with bool!")
+                    return ""                    
         elif " float " in line:
             modified_line = line.replace("const float ", "")
             name, modified_line = modified_line.split("=")
@@ -178,13 +212,43 @@ def parse(line):
                     return line.replace(" float", "")
                 else:
                     print(f"ValueError!: {modified_line} is not compatiable with float!")
+                    return ""
+    elif c in var:
+        if "=" in line:
+            # Type checker
+            name, value = line.split("=")
+            name = name.replace(" ", "")
+            type = var[name]
+            value = value.lstrip()
+            try:
+                if type == int:
+                    value = int(value)
+                    print()
+                elif type == str:
+                    pass
+                elif type == bool:
+                    value = bool(value)
+                elif type == float:
+                    value = float(value)
+            except ValueError:
+                pass
+            finally:
+                if checkType(value, type):
+                    return line
+                else:
+                    print(f"ValueError!: {value} cannot be converted to {type}!")
+                    return ""
+
+    else:
+        return line
 # Check type
 def checkType(value, type):
         x = isinstance(value, type)
         return x
 
-parse("let String hi = 5")
-print(var)
-with open(input()) as files:
-    for line in files:
-        parse(line)
+def compile(file):
+    final = "// JavaScript compiled from CallBack"
+    with open(file) as files:
+        for line in files:
+            final = final + parse(line)
+        return final

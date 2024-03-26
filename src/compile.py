@@ -1,5 +1,4 @@
 import construct
-import webbrowser
 
 def compile(file, out):
     final = "<!DOCTOTYPE html>\n\t<html>\n"
@@ -15,9 +14,8 @@ def compile(file, out):
 def start():
     return "<!DOCTOTYPE html>\n\t<html>\n"
 
-def out(inputFile, file="out.html"):
+def out(inputFile, file="out.js"):
     with open(file, "w") as files:
-        files.write(compile(inputFile, files))
-        webbrowser.open(file)
+        files.write(construct.compile(inputFile))
 
-out("/Users/keli/Documents/GitHub/Lascal/CallBack/src/test.cb")
+out(input())
