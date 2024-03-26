@@ -49,12 +49,17 @@ def parse(line):
             modified_line = line.replace("let int ", "")
             name, modified_line = modified_line.split("=")
             name = name.replace(" ", "")
-            if checkType(modified_line, int):
-                var[name] = int
-                return line.replace(" int", "")
-            else:
-                print(f"ValueError!: {modified_line} is not compatiable with int!")
-        if " String " in line:
+            try:
+                modified_line = int(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, int):
+                    var[name] = int
+                    return line.replace(" int", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with int!")
+        elif " String " in line:
             modified_line = line.replace("let String ", "")
             name, modified_line = modified_line.split("=")
             name = name.replace(" ", "")
@@ -63,6 +68,90 @@ def parse(line):
                 return line.replace(" String", "")
             else:
                 print(f"ValueError!: {modified_line} is not compatiable with String!")
+        elif " bool " in line:
+            modified_line = line.replace("let bool ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = bool(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, bool):
+                    var[name] = bool
+                    return line.replace(" bool", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with bool!")
+    if line.lstrip().startswith("var"):
+        if " int " in line:
+            modified_line = line.replace("var int ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = int(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, int):
+                    return line.replace(" int", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with int!")
+        elif " String " in line:
+            modified_line = line.replace("var String ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            if checkType(modified_line, str):
+                return line.replace(" String", "")
+            else:
+                print(f"ValueError!: {modified_line} is not compatiable with String!")
+        elif " bool " in line:
+            modified_line = line.replace("var bool ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = bool(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, bool):
+                    return line.replace(" bool", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with bool!")
+    if line.lstrip().startswith("const"):
+        if " int " in line:
+            modified_line = line.replace("const int ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = int(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, int):
+                    return line.replace(" int", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with int!")
+        elif " String " in line:
+            modified_line = line.replace("const String ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            if checkType(modified_line, str):
+                return line.replace(" String", "")
+            else:
+                print(f"ValueError!: {modified_line} is not compatiable with String!")
+        elif " bool " in line:
+            modified_line = line.replace("const bool ", "")
+            name, modified_line = modified_line.split("=")
+            name = name.replace(" ", "")
+            try:
+                modified_line = bool(modified_line)
+            except ValueError:
+                pass
+            finally:
+                if checkType(modified_line, bool):
+                    return line.replace(" bool", "")
+                else:
+                    print(f"ValueError!: {modified_line} is not compatiable with bool!")
 # Check type
 def checkType(value, type):
         x = isinstance(value, type)
@@ -70,3 +159,6 @@ def checkType(value, type):
 
 parse("let String hi = 5")
 print(var)
+with open(input()) as files:
+    for line in files:
+        parse(line)
